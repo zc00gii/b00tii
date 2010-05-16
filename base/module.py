@@ -2,8 +2,7 @@ class Module():
     modules = dict()
 
     def reloadModule(self,name):
-        self.unloadModule(name)
-        self.loadModule(name)
+        reload(self.modules[name])
 
     def loadModule(self,name):
         if name not in globals().keys():

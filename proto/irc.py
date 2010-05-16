@@ -16,7 +16,7 @@ class IRCFunctions(Server,Buffer):
 
     def identify(self, ident = "b00tii",  name = "b00tii",):  
         self.send("USER " + self.user["ident"] + " * * : " + self.user["name"])
-        self.nick()
+        self.send("NICK " + self.user["nick"])
 
     def nick(self, nick = user["nick"]):
         if nick != self.user["nick"]:
@@ -28,7 +28,7 @@ class IRCFunctions(Server,Buffer):
 
     def pingPong(self):
         if self.findBuffer('PING'):
-            self.send('PONG ' + self._buffer[1])
+            self.send('PONG :' + self._buffer[1])
     def ctcp(self, recvr, message, upper = True):
         if upper == True:
             self.message(recvr, "\001" + message.upper() + "\001")
