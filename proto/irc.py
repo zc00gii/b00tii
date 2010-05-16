@@ -27,9 +27,6 @@ class IRCFunctions(Server,Buffer):
             self.user["nick"] = nick
         self.sendraw("NICK " + self.user["nick"])
 
-    def getBuffer(self):
-        self._buffer = self.readBuffer()
-
     def pingPong(self):
         if self._buffer[0].startswith("PING"):
             self.sendraw("PONG " + self._buffer[0][6:])
@@ -53,4 +50,9 @@ class IRCFunctions(Server,Buffer):
         self.sendraw("MODE ", channel + " " + mode + " " + args)
     def topic(self, channel, tpc):
         self.sendraw("TOPIC " + channel + " :" + tpc)
-
+    def loop(self):
+        try:
+            self.getBuffer()
+            self.pingPong()
+        except KeyboardInterrupt:
+            self.close()

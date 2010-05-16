@@ -25,3 +25,5 @@ class Buffer():
                 break
         return False
         
+    def getBuffer(self):
+        self._buffer = self.readBuffer()
