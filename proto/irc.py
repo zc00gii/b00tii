@@ -1,3 +1,4 @@
+import socket
 import base.server
 import base.buffer
 from base.server import Server
@@ -54,5 +55,5 @@ class IRCFunctions(Server,Buffer):
         try:
             self.getBuffer()
             self.pingPong()
-        except KeyboardInterrupt:
+        except (KeyboardInterrupt, socket.error):
             self.close()
