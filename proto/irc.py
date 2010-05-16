@@ -10,25 +10,32 @@ class IRCFunctions(Server,Buffer):
                                        # contains nick, (real)name, 
                                        # ident, and pass(NickServ)
     server = dict() # contains addr(ess) and port
-
+	
+    def sendraw(self, whatToSend):
+        print "SENDING: " + whatToSend
+        self.send(whatToSend + "\r\n")
+	
     def message(self, recvr, message):
-        self.send("PRIVMSG " + recvr + " :" + message)
+        self.sendraw("PRIVMSG " + recvr + " :" + message)
 
     def identify(self, ident = "b00tii",  name = "b00tii",):  
-        self.send("USER " + self.user["ident"] + " * * : " + self.user["name"])
-        self.send("NICK " + self.user["nick"])
+        self.sendraw("USER " + self.user["ident"] + " * * : " + self.user["name"])
+        self.sendraw("NICK " + self.user["nick"])
 
     def nick(self, nick = user["nick"]):
         if nick != self.user["nick"]:
             self.user["nick"] = nick
-        self.send("NICK " + self.user["nick"])
+        self.sendraw("NICK " + self.user["nick"])
 
     def getBuffer(self):
         self._buffer = self.readBuffer()
 
     def pingPong(self):
-        if self.findBuffer('PING'):
-            self.send('PONG :' + self._buffer[1])
+        if self._buffer[0].startswith("PING"):
+            self.sendraw("PONG " + self._buffer[0][6:])
+        #for thing in self._buffer:
+        #    print ">>>> " + thing
+        
     def ctcp(self, recvr, message, upper = True):
         if upper == True:
             self.message(recvr, "\001" + message.upper() + "\001")
@@ -37,13 +44,13 @@ class IRCFunctions(Server,Buffer):
     def action(self, recvr, message):
         self.ctcp(recvr, "ACTION " + message, False)
     def join(self, channel):
-        self.send("JOIN " + channel)
+        self.sendraw("JOIN " + channel)
     def part(self, channel, reason = ""):
-        self.send("PART " + channel + " :" + reason)
+        self.sendraw("PART " + channel + " :" + reason)
     def kick(self, channel, usr, reason=""):
-        self.send("KICK ", channel + " " + usr + " :" + reason)
+        self.sendraw("KICK ", channel + " " + usr + " :" + reason)
     def mode(self, channel, mode, args):
-        self.send("MODE ", channel + " " + mode + " " + args)
+        self.sendraw("MODE ", channel + " " + mode + " " + args)
     def topic(self, channel, tpc):
-        self.send("TOPIC " + channel + " :" + tpc)
+        self.sendraw("TOPIC " + channel + " :" + tpc)
 
