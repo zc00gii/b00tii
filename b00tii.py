@@ -24,4 +24,3 @@ while True:
 #    a.getBuffer()
 #    a.pingPong()
     a.loop()
-
