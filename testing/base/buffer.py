@@ -4,22 +4,20 @@ class Buffer():
     extra = ['']
     def readBuffer(self):
         try:
-            self.data = extra[0] + self.recv(1024)
-            data = data.replace('\r', "")
-            extra.pop(0)
+            line = ''
+            data = self.extra[0] + self.recv(1024)
+#            data = data.replace('\r', "")
+            self.extra.pop(0)
             for x in range(len(data.split('\n'))):
-                extra.append(data.split('\n')[x])
-            line = data.split('\n')[0]
+                self.extra.append(data.split('\n')[x] + '\n')
+            line = data.split('\n')[0] + '\n'
         except socket.error:
             self.close
         return line
 
     def findBuffer(self, line):
-        x = 0
-        for x in range(len(self.buffer)):
-            if self.buffer[x].find(line) == 0:
+        if self.buffer.find(line) == 0:
                 return True
-                break
         return False
         
     def getBuffer(self):

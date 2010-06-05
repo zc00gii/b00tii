@@ -4,6 +4,7 @@ import base.module
 import proto.irc
 from proto.irc import IRCFunctions
 
+
 channels = ["#offtopic"]
 a = IRCFunctions()
 a.connect(("irc.ninthbit.net",6667))
